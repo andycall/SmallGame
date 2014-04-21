@@ -1,6 +1,3 @@
-/**
- * Created by andycall on 14-3-29.
- */
 var d = document;
 var wrapper = d.getElementById('wrap');
 var lis = wrapper.getElementsByTagName('li'),
@@ -8,11 +5,11 @@ var lis = wrapper.getElementsByTagName('li'),
     wapLeft = wrapper.offsetLeft || wrapper.documentElement.offsetLeft,
     wapTop = wrapper.offsetTop || wrapper.documentElement.offsetTop,
     wapWidth = wrapper.offsetWidth || wrapper.documentElement.offsetWidth,
-    wapHeight = wrapper.offsetHeight || wrapper.documentElement.offsetHeight;
+    wapHeight = wrapper.offsetHeight || wrapper.documentElement.offsetHeight,
+    index = 0;
 function startDrag(ele){
     on(ele,'mousedown',function(e){
         e = e || window.event;
-//        debugger;
 
         var target = e.target || e.srcElement,
             pos = {
@@ -28,23 +25,19 @@ function startDrag(ele){
 
             var targetWidth = target.offsetWidth || target.documentElement.offsetWidth,
                 targetHeight = target.offsetHeight || target.documentElement.offsetHeight;
-
-            css(ele,'zIndex',100);
+            index++;
+            Tick.setAttr(ele,'zIndex',index);
             on(document,'mousemove',function(e){
                 e = e || window.event;
                 var mouseX = e.clientX,
                     mouseY = e.clientY,
                    hitArr = [],
                     BestEle;
-//                debugger;
-//                console.log(moiuse)
                 var left = mouseX - wapLeft - targetWidth / 2;
                 var top = mouseY - wapTop - targetHeight / 2;
-                css(ele,'left',left + 'px');
-                css(ele,'top',top + 'px') ;
-//                debugger;
+                Tick.setAttr(ele,'left',left + 'px');
+                Tick.setAttr(ele,'top',top + 'px') ;
                 hitArr = hitTest(ele);
-//                debugger;
                 for(var i = 0,len = lis.length; i < len;  i ++){
                     lis[i].style.outline= "0";
                 }
@@ -64,16 +57,10 @@ function startDrag(ele){
                 e = e || window.event;
                 off(document,'mousemove');
                 off(document,'mouseup');
-//                debugger
-//                constant(ele,pos,300);
-//                console.log(hit);
-//                console.log(pos);
                 if(!hit.target){
-//                    console.log(1);
                     Tick.To(ele,pos,500);
                 }
                 else{
-//                    console.log(2);
                     Tick.To(ele,hit.pos,500);
                     Tick.To(hit.target,pos,500);
                 }
@@ -91,12 +78,10 @@ for(var i = 0,len = lis.length; i < len; i ++){
 }
 
 
-
-
 function layout(){
-    var wrapperPosition = css(wrapper,"position");
+    var wrapperPosition = Tick.getAttr(wrapper,"position");
     if(wrapperPosition == 'static'){
-        css(wrapper,"position",'relative');
+        Tick.setAttr(wrapper,"position",'relative');
     }
     for(var i = 0,len = lis.length; i < len; i ++){
         var item = lis[i];
@@ -104,7 +89,7 @@ function layout(){
         var top = (item.offsetTop || item.documentElement.offsetTop);
         var left = (item.offsetLeft|| item.documentElement.offsetLeft);
 
-        lis[i].setAttribute('data-index',i);
+        lis[i].getAttribute('data-index',i);
         positionArr.push({
             item : item,
             top: top,
@@ -115,10 +100,10 @@ function layout(){
         var item = positionArr[i].item;
         var top = positionArr[i].top;
         var left = positionArr[i].left;
-        css(item,"top",top + 'px');
-        css(item,"left",left+ 'px');
-        css(item,"position",'absolute');
-        css(item,"margin","0");
+        Tick.setAttr(item,"top",top + 'px');
+        Tick.setAttr(item,"left",left+ 'px');
+        Tick.setAttr(item,"position",'absolute');
+        Tick.setAttr(item,"margin","0");
     }
 }
 

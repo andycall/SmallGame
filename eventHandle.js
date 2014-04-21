@@ -1,13 +1,13 @@
-/**
- * Created by andycall on 14-3-24.
- */
+
 function $$(id){
     return typeof id === 'string' ? document.getElementById(id) : id;
 }
 
+/**
+*  添加事件监听
+*/
 function on(target,eventName,fn){
     var factor = /\s+/g;
-//    debugger;
     var fnString = fn.toString().replace(factor,"");
     if(!target[eventName + "event"]){
         target[eventName + 'event'] = {};
@@ -28,6 +28,9 @@ function on(target,eventName,fn){
     }
 }
 
+/*
+* 取消事件监听
+*/
 function off(target,eventName){
     var factor = /\s+/g;
     var Func = target[eventName + "event"][eventName];
@@ -42,7 +45,9 @@ function off(target,eventName){
     }
 }
 
-
+/*
+* 取消所有事件监听
+*/
 function offAll(target,eventName){
     var factor = /\s+/g;
     var Funcs = target[eventName + "event"];
@@ -62,12 +67,18 @@ function offAll(target,eventName){
         }
     }
 }
+/*
+* 判断对象是否是DOM对象
+*/
 function isElement(o){
     return (
         typeof HTMLElement === "function" ? o instanceof HTMLElement : //DOM2
             o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
         );
 }
+/*
+* 事件代理函数
+*/
 function EventWatch(parent,delegate,eventName,fn){
     var callback;
     callback = function (e) {
@@ -93,24 +104,26 @@ function EventWatch(parent,delegate,eventName,fn){
     on(parent,eventName,callback);
 }
 
+/*
+* 判断是否包含
+*/
 
 function containers(outer,inner){
     return outer.contains ? outer != inner && outer.contains(inner) : !!(outer.compareDocumentPosition(inner) && 16);
 }
 
 
-
+/*
+* 兼容的mouseEnter方法
+*/
 function mouseEnter(target,fn){
     var eventName = "mouseover";
 
     var hander = function(e){
         e = e || window.event;
-//        console.log(e);
         var target = e.target;
         var FromEle = e.relatedTarget || e.fromElement;
         var flag;
-//        console.log(this == target);
-//        console.log(FromEle);
         flag = containers(FromEle,target) && this == target;
         if(flag){
             fn.call(target,e);
@@ -118,7 +131,9 @@ function mouseEnter(target,fn){
     }
     on(target,eventName,hander);
 }
-
+/*
+* 兼容的mouseOut方法
+*/
 function mouseOut(target,fn){
     var eventName = "mouseleave";
 
@@ -128,7 +143,6 @@ function mouseOut(target,fn){
         var FromEle = e.relatedTarget || e.fromElement;
 
         var flag;
-//        console.log(FromEle);
         flag = containers(FromEle,target) && this == target;
         if(flag){
             fn.call(target,e);
@@ -138,7 +152,9 @@ function mouseOut(target,fn){
 }
 
 
-
+/*
+*  focus事件的冒泡实现
+*/
 function focusIn(target,fn){
     var eventName = 'focus';
     var eventIE = "onfocusin";
@@ -162,7 +178,9 @@ function focusIn(target,fn){
         target[eventIE] = eventFunc;
     }
 }
-
+/*
+* blur事件的冒泡实现
+*/
 function focusOut(target,fn){
     var eventName = 'blur';
     var eventIE = "onfocusout";

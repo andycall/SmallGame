@@ -1,6 +1,3 @@
-/**
- * Created by andycall on 14-3-30.
- */
 /*
 *   Tick 运动库
 *   Tick.to(target,attr,speed or moveType,speed);
@@ -82,11 +79,9 @@ var Tick = (function(window,undefined){
     //库入口
     function To(target,params){
 
-//        debugger;
        var param = init.apply(self,arguments);
 
         animate.apply(self,param);
-
 
     }
 
@@ -201,16 +196,8 @@ var Tick = (function(window,undefined){
             else{
                 timeScale = speed * scale.x - time;
 
-
-//                if(timeScale < 1000 / 60){
-//                    timeScale = 1000 / 60;
-////                    speed = speed  / 2;
-//                }
-
-                console.log(timeScale);
-
                 time = speed * scale.x;
-//                debugger;
+
                 for(var key in json){
                     if(json.hasOwnProperty(key)){
                        newValue =  target[key.toString()].oldValue + (parseFloat(json[key]) - target[key.toString()].oldValue) * scale.y;
